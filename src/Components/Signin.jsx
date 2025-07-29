@@ -34,8 +34,13 @@ const Signin = () => {
       }
 
       // Update auth status and navigate to login
-      setIsSigned(true)
-      navigate("/Login")
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setIsSigned(true);
+        navigate("/");
+      } else {
+        throw new Error("User data not received during sign in.");
+      }
     } catch (error) {
       alert(error.message)
     }

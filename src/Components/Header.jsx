@@ -7,7 +7,7 @@ import User from './User'
 import { useNavigate } from 'react-router-dom';
 
 
-const Header = ({ isSigned,channelCreated }) => {
+const Header = ({ isSigned, channelCreated }) => {
 
   const [searchQuery, setSearchQuery] = useState("")
   const [suggestions, setSuggestions] = useState([])
@@ -25,7 +25,7 @@ const Header = ({ isSigned,channelCreated }) => {
   useEffect(() => {
     // console.log(searchQuery)
 
-      // Fetch search suggestions as user types
+    // Fetch search suggestions as user types
     const timer = setTimeout(() => {
       searchSuggestions()
     }, 100)
@@ -35,10 +35,21 @@ const Header = ({ isSigned,channelCreated }) => {
     }
   }, [searchQuery])
 
-    // Fetch user's channel when signed in or a new channel is created
+  // Fetch user's channel when signed in or a new channel is created
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) return;
+
+    const storedUser = localStorage.getItem("user");
+    let user = null;
+
+    try {
+      if (storedUser) {
+        user = JSON.parse(storedUser);
+      }
+    } catch (e) {
+      console.error("Invalid user JSON in localStorage:", e);
+      localStorage.removeItem("user");
+    }
+
 
     async function fetchUserChannel() {
       try {
@@ -59,9 +70,9 @@ const Header = ({ isSigned,channelCreated }) => {
     console.log(isSigned)
     console.log(channel)
     fetchUserChannel();
-  }, [isSigned,channelCreated]);
+  }, [isSigned, channelCreated]);
 
- // API call to get live search suggestions from YouTube API
+  // API call to get live search suggestions from YouTube API
   const searchSuggestions = async () => {
     console.log(searchQuery)
     const data = await fetch(youtubeSearchApi + searchQuery)
@@ -101,21 +112,21 @@ const Header = ({ isSigned,channelCreated }) => {
 
       <div className="relative col-span-1 sm:col-span-1 lg:col-span-3 flex justify-center">
         <div className="flex w-full max-w-[500px]">
-         {isSigned &&(
-          <input
-          className="border border-gray-400 w-auto lg:w-100 md:w-50 sm:w-auto  rounded-l-full px-4 py-2 text-sm"
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setShowSuggestions(false)}
-        />
-         )} 
-        
           {isSigned && (
-                <button className="border border-gray-400 bg-gray-200 px-4 rounded-r-full text-sm">🔍</button>
+            <input
+              className="border border-gray-400 w-auto lg:w-100 md:w-50 sm:w-auto  rounded-l-full px-4 py-2 text-sm"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setShowSuggestions(false)}
+            />
           )}
-      
+
+          {isSigned && (
+            <button className="border border-gray-400 bg-gray-200 px-4 rounded-r-full text-sm">🔍</button>
+          )}
+
         </div>
 
         {showSuggestions && (
@@ -149,20 +160,20 @@ const Header = ({ isSigned,channelCreated }) => {
             </button>
           </Link>
         )}
-       
-        {isSigned &&(
-            <button
+
+        {isSigned && (
+          <button
             className="bg-red-400 hover:cursor-pointer hover:bg-red-500 text-white px-3 py-1 text-sm rounded-full font-semibold"
             onClick={() => {
               localStorage.removeItem("token");
               localStorage.removeItem("user");
-              window.location.reload();  
+              window.location.reload();
             }}
           >
             Logout
           </button>
         )}
-      
+
 
         {isSigned && channel && channel._id && (
           <button
