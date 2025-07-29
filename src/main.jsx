@@ -2,66 +2,100 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// Components for routing
-import Maincontainer from "./Components/Maincontainer.jsx";
-import Watchpage from "./Components/Watchpage.jsx";
 import { Provider } from "react-redux";
 import store from "./utils/store";
-import Signin from "./Components/Signin.jsx";
-import Createchannel from "./Components/Createchannel.jsx";
-import Channelcard from "./Components/Channelcard.jsx";
-import Login from "./Components/Login.jsx";
-import Uploadvideo from "./Components/Uploadvideo.jsx";
-import SingleVideoPage from "./Components/SingleVideoPage.jsx";
-import NotFound from "./Components/NotFound.jsx";
+// Components for routing
+import { lazy, Suspense } from "react";
+const Maincontainer = lazy(() => import("./Components/Maincontainer.jsx"));
+const Watchpage = lazy(() => import("./Components/Watchpage.jsx"));
+const Signin = lazy(() => import("./Components/Signin.jsx"));
+const Createchannel = lazy(() => import("./Components/Createchannel.jsx"));
+const Channelcard = lazy(() => import("./Components/Channelcard.jsx"));
+const Login = lazy(() => import("./Components/Login.jsx"));
+const Uploadvideo = lazy(() => import("./Components/Uploadvideo.jsx"));
+const SingleVideoPage = lazy(() => import("./Components/SingleVideoPage.jsx"));
+const NotFound = lazy(() => import("./Components/NotFound.jsx"));
 
 // 🧭 Create router structure
 const router = createBrowserRouter([
   {
-    path: "/",   // Main path
-    element: <App />,  // Root layout
+    path: "/",
+    element: <App />,
     children: [
       {
-        path: "/",   // Home route
-        element: <Maincontainer />,
+        path: "/",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Maincontainer />
+          </Suspense>
+        ),
       },
       {
-        path: "/signin",  // Signin route
-        element: <Signin />
-      },
-
-      {
-        path: "/login",  // Login route
-        element: <Login />
-      },
-      {
-        path: "/channel",  // Channel creation
-        element: <Createchannel />
+        path: "/signin",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Signin />
+          </Suspense>
+        ),
       },
       {
-        path: "/watch",   // Watch video page 
-        element: <Watchpage />,
-      },
-
-      {
-        path: "/channel/:id",   // Individual channel page
-        element: <Channelcard />,
-      },
-      {
-        path: "/uploadvideo/:id",   //  Upload video
-        element: <Uploadvideo />
+        path: "/login",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login />
+          </Suspense>
+        ),
       },
       {
-        path: "/video/:id",   // Single video view
-        element: <SingleVideoPage />
-      }
-
+        path: "/channel",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Createchannel />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/watch",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Watchpage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/channel/:id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Channelcard />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/uploadvideo/:id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Uploadvideo />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/video/:id",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <SingleVideoPage />
+          </Suspense>
+        ),
+      },
     ],
   },
-
-  {path: "*",   // Watch video page 
-    element: <NotFound />}
+  {
+    path: "*",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <NotFound />
+      </Suspense>
+    ),
+  },
 ]);
 
 // Render app with Redux and Router

@@ -39,16 +39,18 @@ const Header = ({ isSigned, channelCreated }) => {
   useEffect(() => {
 
     const storedUser = localStorage.getItem("user");
-    let user = null;
+    if (!storedUser || storedUser === "undefined") return;
 
+    let user;
     try {
-      if (storedUser) {
-        user = JSON.parse(storedUser);
-      }
+      user = JSON.parse(storedUser);
+      if (!user || !user._id) return; // ✅ Extra safety
     } catch (e) {
-      console.error("Invalid user JSON in localStorage:", e);
+      console.error("Corrupted user in localStorage");
       localStorage.removeItem("user");
+      return;
     }
+
 
 
     async function fetchUserChannel() {
