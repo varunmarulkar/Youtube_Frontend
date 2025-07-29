@@ -14,7 +14,7 @@ import Channelcard from "./Components/Channelcard.jsx";
 import Login from "./Components/Login.jsx";
 import Uploadvideo from "./Components/Uploadvideo.jsx";
 import SingleVideoPage from "./Components/SingleVideoPage.jsx";
-
+import NotFound from "./Components/NotFound.jsx";
 
 // 🧭 Create router structure
 const router = createBrowserRouter([
@@ -42,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/watch",   // Watch video page 
         element: <Watchpage />,
+      },
+      {
+        path: "*",   // Watch video page 
+        element: <NotFound />,
       },
       {
         path: "/channel/:id",   // Individual channel page
