@@ -31,9 +31,9 @@ const router = createBrowserRouter([
         element: <Signin />
       },
 
-      { 
+      {
         path: "/login",  // Login route
-        element: <Login /> 
+        element: <Login />
       },
       {
         path: "/channel",  // Channel creation
@@ -43,10 +43,7 @@ const router = createBrowserRouter([
         path: "/watch",   // Watch video page 
         element: <Watchpage />,
       },
-      {
-        path: "*",   // Watch video page 
-        element: <NotFound />,
-      },
+
       {
         path: "/channel/:id",   // Individual channel page
         element: <Channelcard />,
@@ -56,12 +53,15 @@ const router = createBrowserRouter([
         element: <Uploadvideo />
       },
       {
-        path:"/video/:id",   // Single video view
-        element:<SingleVideoPage/>
+        path: "/video/:id",   // Single video view
+        element: <SingleVideoPage />
       }
-      
+
     ],
   },
+
+  {path: "*",   // Watch video page 
+    element: <NotFound />}
 ]);
 
 // Render app with Redux and Router
