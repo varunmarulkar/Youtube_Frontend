@@ -66,6 +66,7 @@ const Header = ({ isSigned, channelCreated }) => {
         }
       } catch (error) {
         console.error("Failed to fetch channel", error);
+        setChannel(null)
       }
     }
 

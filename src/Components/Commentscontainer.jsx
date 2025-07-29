@@ -19,7 +19,7 @@ const Commentscontainer = ({ videoId }) => {
         try {
             const res = await fetch(`http://localhost:8000/comments/${videoId}`);
             const data = await res.json();
-            setComments(data);
+            setComments(Array.isArray(data)?data:[]);
         } catch (error) {
             console.error("Failed to fetch comments", error);
         }
