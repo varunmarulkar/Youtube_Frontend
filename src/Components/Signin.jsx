@@ -36,6 +36,7 @@ const Signin = () => {
       // Update auth status and navigate to login
       if (data.user) {
         localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
         setIsSigned(true);
         navigate("/");
       } else {

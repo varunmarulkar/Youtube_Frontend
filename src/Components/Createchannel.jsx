@@ -31,7 +31,7 @@ const Createchannel = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `JWT ${localStorage.getItem("token")}`
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify({ channelName, handle, logo, owner })
           });
